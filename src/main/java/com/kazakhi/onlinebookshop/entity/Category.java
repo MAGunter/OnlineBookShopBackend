@@ -10,4 +10,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer categoryId;
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "parentCategoryId")
+    private Category parentCategory;
 }

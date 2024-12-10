@@ -1,9 +1,6 @@
 package com.kazakhi.onlinebookshop.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -13,6 +10,7 @@ public class Author{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer authorId;
     private String name;
+    @Lob
     private String biography;
     private String dateOfBirth;
 }
