@@ -30,5 +30,7 @@ public class Book {
     private Integer publishedYear;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    @Lob
+    private byte[] imageData;
 }
 
