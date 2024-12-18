@@ -4,12 +4,15 @@ import com.kazakhi.onlinebookshop.dto.LoginRequest;
 import com.kazakhi.onlinebookshop.dto.RegisterRequest;
 import com.kazakhi.onlinebookshop.dto.UserResponse;
 import com.kazakhi.onlinebookshop.entity.User;
-import org.springframework.stereotype.Service;
 
-@Service
+import java.security.Principal;
+
 public interface UserService {
     UserResponse registerUser(RegisterRequest request);
-    UserResponse authenticateUser(LoginRequest request);
-    UserResponse toUserResponse(User user);
+    String authenticateUser(LoginRequest request);
+    UserResponse getCurrentUser(Principal principal);
+    UserResponse updateProfile(RegisterRequest request);
+    String updateAvatar(String avatarUrl, Principal principal);
     User getUserById(Long userId);
 }
+

@@ -20,4 +20,5 @@ public class User {
     private Role role = Role.USER;
     private LocalDateTime createdAt;
     private boolean isActive;
+    private String avatarUrl;
 }

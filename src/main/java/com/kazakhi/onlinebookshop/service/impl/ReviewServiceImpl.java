@@ -21,13 +21,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void addReview(Long bookId, Long userId, String comment, short rating) {
-        // Fetch Book and User
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        // Create and save the review
         Review review = new Review();
         review.setBook(book);
         review.setUser(user);
@@ -56,13 +54,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Review getReviews(Long bookId, Long userId) {
-        // Fetch Book and User
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        // Fetch and return the review
         return reviewRepository.findByBookAndUser(book, user)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
     }
