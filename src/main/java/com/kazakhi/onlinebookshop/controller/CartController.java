@@ -19,17 +19,17 @@ public class CartController {
     }
 
     @PostMapping
-    public Cart addToCart(Long userId, Integer bookId, Integer quantity){
+    public Cart addToCart(Integer userId, Long bookId, Integer quantity){
         return cartService.addToCart(userId, bookId, quantity);
     }
 
     @PutMapping("/{bookId}")
-    public Cart updateCart(@PathVariable Integer bookId, Integer userId, Integer quantity){
+    public Cart updateCart(@PathVariable Long bookId, Integer userId, Integer quantity){
         return cartService.updateCart(userId, bookId, quantity);
     }
 
     @DeleteMapping
-    public void removeFromCart(Integer userId, Integer bookId){
+    public void removeFromCart(Integer userId, Long bookId){
         cartService.removeFromCart(userId, bookId);
     }
 }

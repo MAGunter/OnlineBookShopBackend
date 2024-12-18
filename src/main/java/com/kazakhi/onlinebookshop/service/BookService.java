@@ -8,6 +8,6 @@ import java.util.List;
 @Service
 public interface BookService {
     List<Book> getAllBooks();
-    Book getBookById(Integer bookId);
+    Book getBookById(Long bookId);
     byte[] getBookImage(Integer bookId);
 }

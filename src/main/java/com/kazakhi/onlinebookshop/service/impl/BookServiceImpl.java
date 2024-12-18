@@ -26,8 +26,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBookById(Integer bookId) {
-        return bookRepository.findBookByBookId(bookId)
+    public Book getBookById(Long bookId) {
+        return bookRepository.findBookByBookId(Math.toIntExact(bookId))
                 .orElseThrow(() -> new NoSuchElementException("Book not found"));
     }
 

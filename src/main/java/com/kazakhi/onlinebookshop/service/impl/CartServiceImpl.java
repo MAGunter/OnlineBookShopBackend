@@ -28,8 +28,8 @@ public class CartServiceImpl implements CartService{
 
     @Override
     @Transactional
-    public Cart addToCart(Long userId, Integer bookId, Integer quantity) {
-        User user = userService.getUserById(userId);
+    public Cart addToCart(Integer userId, Long bookId, Integer quantity) {
+        User user = userService.getUserById(Long.valueOf(userId));
         Book book = bookService.getBookById(bookId);
         Cart cart = cartRepository.findByUser_UserIdAndBook_BookId(user.getUserId(), book.getBookId())
                 .orElse(new Cart());
@@ -42,7 +42,7 @@ public class CartServiceImpl implements CartService{
 
     @Override
     @Transactional
-    public Cart updateCart(Integer userId, Integer bookId, Integer quantity) {
+    public Cart updateCart(Integer userId, Long bookId, Integer quantity) {
         Cart cart = cartRepository.findByUser_UserIdAndBook_BookId(userId, bookId)
                 .orElseThrow(() -> new RuntimeException("Cart item not found"));
 
@@ -56,7 +56,7 @@ public class CartServiceImpl implements CartService{
 
     @Override
     @Transactional
-    public void removeFromCart(Integer userId, Integer bookId) {
+    public void removeFromCart(Integer userId, Long bookId) {
         cartRepository.deleteByUser_UserIdAndBook_BookId(userId, bookId);
     }
 
