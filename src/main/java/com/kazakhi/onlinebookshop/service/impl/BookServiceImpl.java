@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBookById(Integer bookId) {
-        return bookRepository.findBookByBookId(bookId);
+        return bookRepository.findBookByBookId(bookId)
+                .orElseThrow(() -> new NoSuchElementException("Book not found"));
     }
 
     @Override

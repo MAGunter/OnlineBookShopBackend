@@ -41,6 +41,7 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
+    @Transactional
     public Cart updateCart(Integer userId, Integer bookId, Integer quantity) {
         Cart cart = cartRepository.findByUser_UserIdAndBook_BookId(userId, bookId)
                 .orElseThrow(() -> new RuntimeException("Cart item not found"));

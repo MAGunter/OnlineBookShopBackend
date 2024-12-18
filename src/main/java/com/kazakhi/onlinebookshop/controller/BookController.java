@@ -1,7 +1,7 @@
 package com.kazakhi.onlinebookshop.controller;
 
 import com.kazakhi.onlinebookshop.entity.Book;
-import com.kazakhi.onlinebookshop.service.impl.BookServiceImpl;
+import com.kazakhi.onlinebookshop.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
 
-    private final BookServiceImpl bookService;
+    private final BookService bookService;
 
     @GetMapping
     public List<Book> getAllBooks(){
