@@ -20,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final EmailService emailService;
 
     @Override
     public UserResponse registerUser(RegisterRequest request) {
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(request.getEmail());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
+
+        emailService.sendEmail(user.getEmail(), "Welcome to Online Bookshop",
+                user.getName() + "! You have successfully registered to Online Bookshop!");
 
         return new UserResponse(user.getUserId(), user.getName(), user.getEmail());
     }
