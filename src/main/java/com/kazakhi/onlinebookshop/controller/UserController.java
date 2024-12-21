@@ -5,17 +5,13 @@ import com.kazakhi.onlinebookshop.dto.RegisterRequest;
 import com.kazakhi.onlinebookshop.dto.UserResponse;
 import com.kazakhi.onlinebookshop.service.UserService;
 import com.kazakhi.onlinebookshop.utility.ApiResponse;
-import com.kazakhi.onlinebookshop.utility.JwtResponse;
 import com.kazakhi.onlinebookshop.utility.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -33,7 +29,7 @@ public class UserController {
 
     @PostMapping("/register")
     @Operation(summary = "Register a user", description = "Register a new user")
-    public ResponseEntity<ApiResponse<UserResponse>> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<ApiResponse<UserResponse>> register(@RequestBody RegisterRequest request) {
         UserResponse response = userService.registerUser(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(response, "User registered successfully"));
@@ -70,7 +66,7 @@ public class UserController {
 
     @PutMapping("/profile")
     @Operation(summary = "Update profile", description = "Update the current user's profile")
-    public ResponseEntity<ApiResponse<UserResponse>> updateProfile(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<ApiResponse<UserResponse>> updateProfile(@RequestBody RegisterRequest request) {
         UserResponse response = userService.updateProfile(request);
         return ResponseEntity.ok(new ApiResponse<>(response, "Profile updated successfully"));
     }
