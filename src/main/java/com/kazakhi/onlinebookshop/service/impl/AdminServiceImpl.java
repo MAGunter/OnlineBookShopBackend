@@ -44,21 +44,26 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public BookDTO addBook(BookDTO bookDTO) {
         Author author = authorRepository.findById(bookDTO.authorId())
-                .orElseThrow(() -> new IllegalArgumentException("Author not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Author with ID " + bookDTO.authorId() + " not found"));
 
-        Category category = categoryRepository.findById(Long.valueOf(bookDTO.categoryId()))
-                .orElse(null);
+        Category category = categoryRepository.findById(Long.valueOf(bookDTO.categoryId())).orElse(null);
 
         Book book = new Book();
         book.setTitle(bookDTO.title());
         book.setDescription(bookDTO.description());
         book.setPrice(bookDTO.price());
-        book.setAuthor(author); // Устанавливаем автора
-        book.setCategory(category); // Устанавливаем категорию, если она есть
+        book.setDiscount(bookDTO.discount());
+        book.setStockQuantity(bookDTO.stockQuantity());
+        book.setPublishedYear(bookDTO.publishedYear());
+        book.setImageData(bookDTO.imageUrl());
+        book.setAuthor(author);
+        book.setCategory(category); // Устанавливаем категорию (или null, если она не найдена)
 
         Book savedBook = bookRepository.save(book);
         return convertToDTO(savedBook);
     }
+
+
 
     @Override
     public BookDTO updateBook(Integer bookId, BookDTO bookDTO) {
@@ -141,18 +146,21 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private BookDTO convertToDTO(Book book) {
+        Integer categoryId = (book.getCategory() != null) ? book.getCategory().getCategoryId() : null;
+
         return new BookDTO(
                 book.getBookId(),
                 book.getTitle(),
                 book.getAuthor().getId(),
-                book.getCategory().getCategoryId(),
+                categoryId, // Если категории нет, будет передано null
                 book.getPrice(),
                 book.getDiscount(),
                 book.getStockQuantity(),
                 book.getDescription(),
                 book.getPublishedYear(),
-                null
+                book.getImageData()
         );
     }
+
 }
 

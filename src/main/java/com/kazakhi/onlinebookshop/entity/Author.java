@@ -9,12 +9,13 @@ import java.time.LocalDate;
 @Data
 @Entity
 @NoArgsConstructor
+@Table(name = "authors")
 public class Author{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private String name;
-    @Lob
     private String biography;
     @Column(columnDefinition = "DATE")
     private LocalDate dateOfBirth;

@@ -19,10 +19,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // Для маршрутов админа
-                        .requestMatchers("/api/auth/**").permitAll()      // Открытые маршруты
-                        .anyRequest().authenticated()                    // Остальные маршруты
+                .authorizeHttpRequests(auth -> auth// Открытые маршруты
+                        .anyRequest().permitAll()                   // Остальные маршруты
                 )
                 .csrf(AbstractHttpConfigurer::disable) // Отключаем CSRF через Customizer
                 .build();                     // Возвращаем конфигурацию

@@ -7,15 +7,16 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
+@Table(name = "order_items")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderItemId;
     @ManyToOne
-    @JoinColumn(name = "orderId")
+    @JoinColumn
     private Order order;
     @ManyToOne
-    @JoinColumn(name = "bookId")
+    @JoinColumn
     private Book book;
     private Integer quantity;
     private Integer price;

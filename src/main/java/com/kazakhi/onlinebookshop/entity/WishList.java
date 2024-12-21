@@ -12,10 +12,10 @@ public class WishList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer wishLitId;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn
     private User user;
     @ManyToOne
-    @JoinColumn(name = "bookId")
+    @JoinColumn
     private Book book;
     private LocalDateTime addedAt;
 }

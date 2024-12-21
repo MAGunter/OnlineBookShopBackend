@@ -7,18 +7,18 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Table(name = "reviews")
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reviewId;
     @ManyToOne
-    @JoinColumn(name = "bookId")
+    @JoinColumn
     private Book book;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn
     private User user;
     private short rating;
-    @Lob
     private String comment;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

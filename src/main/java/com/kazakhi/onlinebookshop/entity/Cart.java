@@ -10,10 +10,10 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn
     private User user;
     @ManyToOne
-    @JoinColumn(name = "bookId")
+    @JoinColumn
     private Book book;
     private Integer quantity;
 }

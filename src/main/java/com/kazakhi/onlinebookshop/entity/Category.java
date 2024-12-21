@@ -5,12 +5,13 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "categories")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer categoryId;
     private String name;
     @ManyToOne
-    @JoinColumn(name = "parentCategoryId")
+    @JoinColumn
     private Category parentCategory;
 }

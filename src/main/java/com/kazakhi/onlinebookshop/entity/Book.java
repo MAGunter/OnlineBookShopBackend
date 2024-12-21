@@ -8,29 +8,28 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookId;
     private String title;
     @ManyToOne
-    @JoinColumn(name = "authorId")
+    @JoinColumn
     private Author author;
     @ManyToOne
-    @JoinColumn(name = "categoryId")
+    @JoinColumn
     private Category category;
     private BigDecimal price;
     private BigDecimal discount;
     private Integer stockQuantity;
     @ManyToOne
-    @JoinColumn(name = "currencyCode")
+    @JoinColumn
     private Currency currency;
-    @Lob
     private String description;
     private Integer publishedYear;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    @Lob
-    private byte[] imageData;
+    private String imageData;
 }
 
