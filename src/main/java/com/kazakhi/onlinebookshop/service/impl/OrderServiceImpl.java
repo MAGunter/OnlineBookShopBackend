@@ -1,6 +1,6 @@
 package com.kazakhi.onlinebookshop.service.impl;
 
-import com.kazakhi.onlinebookshop.entity.Order;
+import com.kazakhi.onlinebookshop.entity.Orders;
 import com.kazakhi.onlinebookshop.repository.OrderRepository;
 import com.kazakhi.onlinebookshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -15,18 +15,18 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public List<Order> getAllOrders() {
+    public List<Orders> getAllOrders() {
         return orderRepository.findAll();
     }
 
     @Override
-    public Order getOrderById(Long orderId) {
+    public Orders getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new NoSuchElementException("Order not found"));
     }
 
     @Override
-    public Order createOrder(Order order) {
+    public Orders createOrder(Orders order) {
         return orderRepository.save(order);
     }
 
@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId)
+        Orders order = orderRepository.findById(orderId)
                         .orElseThrow(() -> new NoSuchElementException("Order not found"));
         orderRepository.save(order);
     }

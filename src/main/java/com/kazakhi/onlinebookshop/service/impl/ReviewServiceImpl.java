@@ -2,7 +2,7 @@ package com.kazakhi.onlinebookshop.service.impl;
 
 import com.kazakhi.onlinebookshop.entity.Book;
 import com.kazakhi.onlinebookshop.entity.Review;
-import com.kazakhi.onlinebookshop.entity.User;
+import com.kazakhi.onlinebookshop.entity.Users;
 import com.kazakhi.onlinebookshop.repository.BookRepository;
 import com.kazakhi.onlinebookshop.repository.ReviewRepository;
 import com.kazakhi.onlinebookshop.repository.UserRepository;
@@ -23,7 +23,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void addReview(Long bookId, Long userId, String comment, short rating) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
-        User user = userRepository.findById(userId)
+        Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Review review = new Review();
@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
     public Review getReviews(Long bookId, Long userId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
-        User user = userRepository.findById(userId)
+        Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         return reviewRepository.findByBookAndUser(book, user)

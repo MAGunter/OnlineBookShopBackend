@@ -8,13 +8,14 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class Order {
+@Table(name = "orders")
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId;
     @ManyToOne
     @JoinColumn(name = "userId")
-    private User user;
+    private Users user;
     private BigDecimal totalAmount;
     @ManyToOne
     @JoinColumn(name = "currencyCode")

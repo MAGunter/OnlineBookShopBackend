@@ -25,12 +25,10 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "currencyCode")
     private Currency currency;
-    @Lob
     private String description;
     private Integer publishedYear;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    @Lob
     private byte[] imageData;
 }
 

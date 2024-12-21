@@ -3,7 +3,7 @@ package com.kazakhi.onlinebookshop.service.impl;
 import com.kazakhi.onlinebookshop.dto.LoginRequest;
 import com.kazakhi.onlinebookshop.dto.RegisterRequest;
 import com.kazakhi.onlinebookshop.dto.UserResponse;
-import com.kazakhi.onlinebookshop.entity.User;
+import com.kazakhi.onlinebookshop.entity.Users;
 import com.kazakhi.onlinebookshop.repository.UserRepository;
 import com.kazakhi.onlinebookshop.security.JwtTokenProvider;
 import com.kazakhi.onlinebookshop.service.UserService;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse registerUser(RegisterRequest request) {
-        User user = new User();
+        Users user = new Users();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String authenticateUser(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
+        Users user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse getCurrentUser(Principal principal) {
         // Получаем текущего пользователя из базы данных по email из Principal
-        User user = userRepository.findByEmail(principal.getName())
+        Users user = userRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Возвращаем данные пользователя в виде DTO
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateProfile(RegisterRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
+        Users user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setName(request.getName());
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updateAvatar(String avatarUrl, Principal principal) {
         // Получаем текущего пользователя по Principal
-        User user = userRepository.findByEmail(principal.getName())
+        Users user = userRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Обновляем URL аватара
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User getUserById(Long userId) {
+    public Users getUserById(Long userId) {
         return null;
     }
 }

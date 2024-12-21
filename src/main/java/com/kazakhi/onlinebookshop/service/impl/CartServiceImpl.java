@@ -2,7 +2,7 @@ package com.kazakhi.onlinebookshop.service.impl;
 
 import com.kazakhi.onlinebookshop.entity.Book;
 import com.kazakhi.onlinebookshop.entity.Cart;
-import com.kazakhi.onlinebookshop.entity.User;
+import com.kazakhi.onlinebookshop.entity.Users;
 import com.kazakhi.onlinebookshop.repository.CartRepository;
 import com.kazakhi.onlinebookshop.service.BookService;
 import com.kazakhi.onlinebookshop.service.CartService;
@@ -29,7 +29,7 @@ public class CartServiceImpl implements CartService{
     @Override
     @Transactional
     public Cart addToCart(Integer userId, Long bookId, Integer quantity) {
-        User user = userService.getUserById(Long.valueOf(userId));
+        Users user = userService.getUserById(Long.valueOf(userId));
         Book book = bookService.getBookById(bookId);
         Cart cart = cartRepository.findByUser_UserIdAndBook_BookId(user.getUserId(), book.getBookId())
                 .orElse(new Cart());

@@ -6,7 +6,7 @@ import com.kazakhi.onlinebookshop.dto.OrderDTO;
 import com.kazakhi.onlinebookshop.dto.StatisticsResponse;
 import com.kazakhi.onlinebookshop.entity.Book;
 import com.kazakhi.onlinebookshop.entity.Category;
-import com.kazakhi.onlinebookshop.entity.Order;
+import com.kazakhi.onlinebookshop.entity.Orders;
 import com.kazakhi.onlinebookshop.entity.Status;
 import com.kazakhi.onlinebookshop.repository.BookRepository;
 import com.kazakhi.onlinebookshop.repository.CategoryRepository;
@@ -111,7 +111,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public OrderDTO updateOrderStatus(Long orderId, String status) {
-        Order order = orderRepository.findById(orderId).orElseThrow();
+        Orders order = orderRepository.findById(orderId).orElseThrow();
         order.setStatus(Status.valueOf(status));
         return new OrderDTO(order.getOrderId(), order.getStatus());
     }

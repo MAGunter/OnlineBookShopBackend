@@ -16,9 +16,9 @@ public class Review {
     private Book book;
     @ManyToOne
     @JoinColumn(name = "userId")
-    private User user;
+    private Users user;
     private short rating;
-    @Lob
+
     private String comment;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

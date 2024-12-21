@@ -1,7 +1,7 @@
 package com.kazakhi.onlinebookshop.service.impl;
 
 import com.kazakhi.onlinebookshop.entity.Book;
-import com.kazakhi.onlinebookshop.entity.User;
+import com.kazakhi.onlinebookshop.entity.Users;
 import com.kazakhi.onlinebookshop.entity.WishList;
 import com.kazakhi.onlinebookshop.repository.BookRepository;
 import com.kazakhi.onlinebookshop.repository.UserRepository;
@@ -24,7 +24,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     @Transactional
     public void addToWithList(Long userId, Integer bookId) {
-        User user = userRepository.findById(userId)
+        Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Book book = bookRepository.findBookByBookId(bookId)
@@ -45,7 +45,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     @Transactional
     public void removeFromWishList(Long userId, Integer bookId) {
-        User user = userRepository.findById(userId)
+        Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Book book = bookRepository.findBookByBookId(bookId)
@@ -60,7 +60,7 @@ public class WishListServiceImpl implements WishListService {
     @Override
     @Transactional(readOnly = true)
     public List<WishList> getAllWishListItems(Long userId) {
-        User user = userRepository.findById(userId)
+        Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         return wishListRepository.findByUser(user);

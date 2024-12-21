@@ -13,7 +13,7 @@ public class WishList {
     private Integer wishLitId;
     @ManyToOne
     @JoinColumn(name = "userId")
-    private User user;
+    private Users user;
     @ManyToOne
     @JoinColumn(name = "bookId")
     private Book book;
