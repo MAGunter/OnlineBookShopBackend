@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
 @Tag(name = "Order", description = "Order operations")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserOrderController {
     private final OrderService orderService;
 

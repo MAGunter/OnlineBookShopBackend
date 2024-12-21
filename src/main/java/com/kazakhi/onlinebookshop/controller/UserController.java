@@ -19,6 +19,7 @@ import java.security.Principal;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @Tag(name = "User", description = "User operations")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final UserService userService;

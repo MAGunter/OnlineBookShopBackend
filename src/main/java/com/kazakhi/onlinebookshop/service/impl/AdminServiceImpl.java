@@ -4,31 +4,26 @@ import com.kazakhi.onlinebookshop.dto.BookDTO;
 import com.kazakhi.onlinebookshop.dto.CategoryDTO;
 import com.kazakhi.onlinebookshop.dto.OrderDTO;
 import com.kazakhi.onlinebookshop.dto.StatisticsResponse;
-import com.kazakhi.onlinebookshop.entity.Book;
-import com.kazakhi.onlinebookshop.entity.Category;
-import com.kazakhi.onlinebookshop.entity.Order;
-import com.kazakhi.onlinebookshop.entity.Status;
+import com.kazakhi.onlinebookshop.entity.*;
+import com.kazakhi.onlinebookshop.repository.AuthorRepository;
 import com.kazakhi.onlinebookshop.repository.BookRepository;
 import com.kazakhi.onlinebookshop.repository.CategoryRepository;
 import com.kazakhi.onlinebookshop.repository.OrderRepository;
 import com.kazakhi.onlinebookshop.service.AdminService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
     private final OrderRepository orderRepository;
-
-    public AdminServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, OrderRepository orderRepository) {
-        this.bookRepository = bookRepository;
-        this.categoryRepository = categoryRepository;
-        this.orderRepository = orderRepository;
-    }
+    private final AuthorRepository authorRepository;
 
     @Override
     public StatisticsResponse getStatistics() {
@@ -48,8 +43,21 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public BookDTO addBook(BookDTO bookDTO) {
+        Author author = authorRepository.findById(bookDTO.authorId())
+                .orElseThrow(() -> new IllegalArgumentException("Author not found"));
+
+        Category category = categoryRepository.findById(Long.valueOf(bookDTO.categoryId()))
+                .orElse(null);
+
         Book book = new Book();
-        return convertToDTO(bookRepository.save(book));
+        book.setTitle(bookDTO.title());
+        book.setDescription(bookDTO.description());
+        book.setPrice(bookDTO.price());
+        book.setAuthor(author); // Устанавливаем автора
+        book.setCategory(category); // Устанавливаем категорию, если она есть
+
+        Book savedBook = bookRepository.save(book);
+        return convertToDTO(savedBook);
     }
 
     @Override
