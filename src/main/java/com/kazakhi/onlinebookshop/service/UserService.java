@@ -14,5 +14,7 @@ public interface UserService {
     UserResponse updateProfile(RegisterRequest request);
     String updateAvatar(String avatarUrl, Principal principal);
     User getUserById(Long userId);
+    boolean authenticateUserPlain(LoginRequest loginRequest);
+
 }
 

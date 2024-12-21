@@ -5,12 +5,17 @@ import com.kazakhi.onlinebookshop.dto.RegisterRequest;
 import com.kazakhi.onlinebookshop.dto.UserResponse;
 import com.kazakhi.onlinebookshop.service.UserService;
 import com.kazakhi.onlinebookshop.utility.ApiResponse;
+import com.kazakhi.onlinebookshop.utility.JwtResponse;
+import com.kazakhi.onlinebookshop.utility.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -23,6 +28,8 @@ import java.security.Principal;
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     @Operation(summary = "Register a user", description = "Register a new user")
@@ -33,10 +40,19 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Login", description = "Login a user")
-    public ResponseEntity<ApiResponse<String>> login(@Valid @RequestBody LoginRequest request) {
-        String token = userService.authenticateUser(request);
-        return ResponseEntity.ok(new ApiResponse<>(token, "Login successful"));
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            // Проверяем email и пароль
+            boolean isAuthenticated = userService.authenticateUserPlain(loginRequest);
+
+            if (isAuthenticated) {
+                return ResponseEntity.ok("Login successful");
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username, email, or password");
+            }
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred during login");
+        }
     }
 
     @PostMapping("/logout")

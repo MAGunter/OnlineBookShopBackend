@@ -3,6 +3,7 @@ package com.kazakhi.onlinebookshop.service.impl;
 import com.kazakhi.onlinebookshop.dto.LoginRequest;
 import com.kazakhi.onlinebookshop.dto.RegisterRequest;
 import com.kazakhi.onlinebookshop.dto.UserResponse;
+import com.kazakhi.onlinebookshop.entity.Role;
 import com.kazakhi.onlinebookshop.entity.User;
 import com.kazakhi.onlinebookshop.repository.UserRepository;
 import com.kazakhi.onlinebookshop.security.JwtTokenProvider;
@@ -20,50 +21,58 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final EmailService emailService;
 
     @Override
     public UserResponse registerUser(RegisterRequest request) {
+        // Проверка существования пользователя
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email is already in use");
+        }
+
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.USER);
+        user.setPhone(request.getPhone());
+        user.setActive(true); // Устанавливаем пользователя как активного
         userRepository.save(user);
-
-        emailService.sendEmail(user.getEmail(), "Welcome to Online Bookshop",
-                user.getName() + "! You have successfully registered to Online Bookshop!");
 
         return new UserResponse(user.getUserId(), user.getName(), user.getEmail());
     }
 
     @Override
+    public boolean authenticateUserPlain(LoginRequest request) {
+        // Ищем пользователя по email
+        User user = userRepository.findByName(request.getName()).orElseThrow(() -> new RuntimeException("User not found"));
+        // Проверяем пароль и имя
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        boolean isNameMatch = user.getName().equals(request.getName());
+        boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), user.getPasswordHash());
+        return isNameMatch && isPasswordMatch;
+    }
+
+    @Override
     public String authenticateUser(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        return jwtTokenProvider.generateToken(user.getEmail());
+        return null;
     }
 
     @Override
     public UserResponse getCurrentUser(Principal principal) {
         // Получаем текущего пользователя из базы данных по email из Principal
         User user = userRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         // Возвращаем данные пользователя в виде DTO
         return new UserResponse(user.getUserId(), user.getName(), user.getEmail());
     }
 
-
     @Override
     public UserResponse updateProfile(RegisterRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        // Обновляем данные пользователя
         user.setName(request.getName());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
@@ -75,20 +84,20 @@ public class UserServiceImpl implements UserService {
     public String updateAvatar(String avatarUrl, Principal principal) {
         // Получаем текущего пользователя по Principal
         User user = userRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         // Обновляем URL аватара
         user.setAvatarUrl(avatarUrl);
         userRepository.save(user);
 
-        // Возвращаем обновленный URL
         return user.getAvatarUrl();
     }
 
-
     @Override
     public User getUserById(Long userId) {
-        return null;
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 }
+
 
