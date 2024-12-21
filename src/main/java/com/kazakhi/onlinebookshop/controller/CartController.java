@@ -13,6 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/cart")
 @Tag(name = "Cart", description = "Cart operations")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class CartController {
     private final CartService cartService;
 

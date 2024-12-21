@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/upload")
 @RequiredArgsConstructor
 @Tag(name = "File Upload", description = "File upload operations")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class FileUploadController {
 
     private final FileStorageService fileStorageService;

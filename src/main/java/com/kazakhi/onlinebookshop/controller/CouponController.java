@@ -14,6 +14,8 @@ import java.util.List;
 @RequestMapping("/api/admin/coupons")
 @RequiredArgsConstructor
 @Tag(name = "Coupon", description = "Coupon management")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class CouponController {
 
     private final CouponService couponService;
