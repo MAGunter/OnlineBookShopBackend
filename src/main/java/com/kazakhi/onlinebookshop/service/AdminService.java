@@ -19,4 +19,5 @@ public interface AdminService {
     void deleteCategory(Long id);
     OrderDTO updateOrderStatus(Long orderId, String status);
     void deleteOrder(Long orderId);
+    List<CategoryDTO> getAllCategories();
 }

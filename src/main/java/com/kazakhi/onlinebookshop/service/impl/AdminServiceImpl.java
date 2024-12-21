@@ -121,6 +121,17 @@ public class AdminServiceImpl implements AdminService {
         orderRepository.deleteById(orderId);
     }
 
+    @Override
+    public List<CategoryDTO> getAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(category -> new CategoryDTO(
+                        category.getCategoryId(),
+                        category.getName(),
+                        category.getParentCategory()
+                ))
+                .toList(); // Преобразование потока в список
+    }
+
     private BookDTO convertToDTO(Book book) {
         return new BookDTO(
                 book.getBookId(),

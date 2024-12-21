@@ -1,5 +1,6 @@
 package com.kazakhi.onlinebookshop.service.impl;
 
+import com.kazakhi.onlinebookshop.dto.OrderDTO;
 import com.kazakhi.onlinebookshop.entity.Order;
 import com.kazakhi.onlinebookshop.repository.OrderRepository;
 import com.kazakhi.onlinebookshop.service.OrderService;
@@ -26,7 +27,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order createOrder(Order order) {
+    public Order createOrder(OrderDTO orderDTO) {
+        Order order = new Order();
+        order.setOrderId(orderDTO.id());
+        order.setStatus(orderDTO.status());
         return orderRepository.save(order);
     }
 
@@ -41,4 +45,5 @@ public class OrderServiceImpl implements OrderService {
                         .orElseThrow(() -> new NoSuchElementException("Order not found"));
         orderRepository.save(order);
     }
+
 }

@@ -10,17 +10,23 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                );
-        return http.build();
+        return http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // Для маршрутов админа
+                        .requestMatchers("/api/auth/**").permitAll()      // Открытые маршруты
+                        .anyRequest().authenticated()                    // Остальные маршруты
+                )
+                .csrf(AbstractHttpConfigurer::disable) // Отключаем CSRF через Customizer
+                .build();                     // Возвращаем конфигурацию
     }
 }
+
+

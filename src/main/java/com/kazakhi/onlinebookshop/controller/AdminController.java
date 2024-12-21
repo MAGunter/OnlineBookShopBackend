@@ -89,4 +89,10 @@ public class AdminController {
         adminService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/categories")
+    @Operation(summary = "Get all categories", description = "Get all categories in the online bookshop")
+    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+        return ResponseEntity.ok(adminService.getAllCategories());
+    }
 }
